@@ -32,5 +32,20 @@
     <ClInclude Include="Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="antidbg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Junk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Junk2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Junk3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obfuscat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

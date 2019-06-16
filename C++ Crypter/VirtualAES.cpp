@@ -1,6 +1,6 @@
 #include "VirtualAES.h"
 #include <stdexcept>
-
+#pragma warning(disable:4996)
 unsigned char virtualAES::g_aes_logt[256], virtualAES::g_aes_ilogt[256];
 unsigned char virtualAES::g_aes_sbox[256], virtualAES::g_aes_isbox[256];
 

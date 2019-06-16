@@ -25,19 +25,20 @@ std::vector<char> file_data;  // With your current program, make this a global.
 void RDF() //The Function that Reads the File and Copies the stub
 {
 	DWORD bt;
-								
-
 	cout << "File to Encrypt: ";
 	cin >> name; // Ask for input from the user and store that inputed value in the name variable
 	cout << "Output name: ";
 	cin >> output;
 	CopyFile("stub.exe", output/*L"Crypted.exe"*/, 0);// Copy stub , so we done need to download a new one each time we crypt
-	// ofcourse we can just update the resources with new data but whatever
+	
+													  // ofcourse we can just update the resources with new data but whatever
 	cout << "\nGetting the HANDLE of the file to be crypted\n";
 	HANDLE efile = CreateFileA(name, GENERIC_ALL,FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);	
+	
 	//^ Get the handle of the file to be crypted
 	cout << "Getting the File size\n";
 	fs = GetFileSize(efile, NULL);
+
 	//Get its size , will need to use it for the encryption and buffer that will store that Data allocation
 	cout << "The File Size is: ";
 	cout << fs;
@@ -45,20 +46,12 @@ void RDF() //The Function that Reads the File and Copies the stub
 	cout << "Allocating Memory for the ReadFile function\n";
 	file_data.resize(fs);  // set vector length equal to file size
 	cout << "Reading the file\n";
-	//ReadFile(efile, FB, fs, &bt, NULL);//Read the file (put the files data in to a FB buffer)
-
 	ReadFile(efile, (LPVOID)(file_data.data()), fs, &bt, NULL);
 
 	CloseHandle(efile);//close the handle
 
 	if (fs != bt)
 		cout << "Error reading file!" << endl;
-}
-
-void xor_crypt(const std::string &key, std::vector<char> &data)
-{
-	for (size_t i = 0; i != data.size(); i++)
-		data[i] ^= key[i % key.size()];
 }
 
 
@@ -116,7 +109,6 @@ void enc() // The function that Encrypts the info on the FB buffer
 }
 
 
-
 void WriteToResources(LPTSTR szTargetPE, int id, LPBYTE lpBytes, DWORD dwSize) // Function that Writes Data to resources 
 {
 	cout << "Writing Encrypted data to stub's resources\n";
@@ -130,6 +122,10 @@ void WriteToResources(LPTSTR szTargetPE, int id, LPBYTE lpBytes, DWORD dwSize) /
 int main() // The main function (Entry point)
 {
 
+	unsigned char key[KEY_256] = "S#q-}=6{)BuEV[GDeZy>~M5D/P&Q}6>";
+	unsigned char plaintext[BLOCK_SIZE];
+	unsigned char ciphertext[BLOCK_SIZE];
+
 	RDF(); //Read the file
 	enc();
 	file_data.push_back(choice);
@@ -138,4 +134,3 @@ int main() // The main function (Entry point)
 	cout << "Your File Got Crypted\n";
 	system("PAUSE");
 }
-

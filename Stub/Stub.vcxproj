@@ -72,7 +72,12 @@
     <ClCompile Include="VirtualAES.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="antidbg.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="Junk.h" />
+    <ClInclude Include="Junk2.h" />
+    <ClInclude Include="Junk3.h" />
+    <ClInclude Include="obfuscat.h" />
     <ClInclude Include="Runpe.h" />
     <ClInclude Include="VirtualAES.h" />
   </ItemGroup>
